@@ -1,0 +1,49 @@
++------------------+----------------------------------------------------------+
+| Linked           | Node: Graphs                                             |
++------------------+----------------------------------------------------------+
+| Linked lists     | Graphs are a common data structure that is a collection  |
+| Hash tables      | of two types of objects: nodes and edges. Nodes are the  |
+| Graphbook        | entities in the graph, and the edges are the relation-   |
+| Tree             | ships between them.                                      |
+|                  |                                                          |
+|                  | graph.py                                                 |
+|                  | graph = {}                                               |
+|                  |                                                          |
+|                  | def link(node1, node2):                                  |
+|                  |     if not node1 in graph:                               |
+|                  |         graph[node1] = () # set to prevent duplicates    |
+|                  |     graph[node1].add(node2)                              |
+|                  |                                                    [run] |
+|                  |                                                          |
+|                  | The example above shows two properties of graphs that    |
+|                  | important: edges are a unique mapping between nodes, and |
+|                  | links can have directions. That is, it's possible for a  |
++------------------+----------------------------------------------------------+
+| [Back] Home      |                                                       v  |
++------------------+----------------------------------------------------------+
+
+Picking graphbook from the list above would change to something like
+
++------------------+----------------------------------------------------------+
+| Linked           | Node: Graphs                                             |
++------------------+----------------------------------------------------------+
+| Graphs           | Graphbook is a project to play around with mechanisms    |
+| IPython noteb... | for organising a person's external memory, but it's      |
+| Blackbook        | oriented for information-centric roles, like programming |
+| Projects         | or physics. It's built on the idea of pages in a note-   |
+|                  | book serving as nodes in a graph. Each node is comprised |
+|                  | of some metadata and a collection of "content" (for lack |
+|                  | of a better term).                                       |
+|                  |                                                          |
+|                  | When I originally started thinking of this idea, I       |
+|                  | had Common Lisp's CLOS in mind. The content type is a    |
+|                  | generic supertype (you could imagine it just storing     |
+|                  | textual content) that could be specialised e.g. to run   |
+|                  | Python or scheme code, or to be a Markdown node.         |
+|                  |                                                          |
+|                  | This idea isn't new; it's a lot like a wiki. I've got    |
+|                  | ideas for extending it, but I want to verify the founda- |
+|                  | tional ideas before trying to get fancy.                 |
++------------------+----------------------------------------------------------+
+| [Back] Graph     |                                                       v  |
++------------------+----------------------------------------------------------+
