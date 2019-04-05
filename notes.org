@@ -1,0 +1,8 @@
+#+TITLE: graphbook notes
+
+* Notes
+
+** Storage
+   + First pass: pickle the whole damn thing
+   + Second pass: file per node? some sort of top-level config file
+     (or symlink to a root node?)

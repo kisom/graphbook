@@ -1,4 +1,4 @@
-from typing import Dict, List, Set
+from typing import Counter, Dict, List, Set
 import uuid
 
 
@@ -37,6 +37,7 @@ class Cell:
 class Node:
     id: str
     cells: List[Cell]
+    links: Counter[str]
 
     # probably useful too: tags, metadata... need to think about how
     # to make metadata useful; str->str isn't super useful (or gets
@@ -48,6 +49,7 @@ class Node:
     def __init__(self) -> None:
         self.id = str(uuid.uuid4())
         self.cells = []
+        self.links = set()
 
     def add(self, cell: Cell) -> str:
         self.cells.append(cell)
@@ -59,9 +61,25 @@ class Node:
             rendered += cell.render()
         return rendered 
 
+    # Linking is tricky. Who should know about the relationship
+    # between two nodes? When I started out writing this, it seemed
+    # obvious that the links should go in a graph. Now I think nodes
+    # should keep the linking information, and the graph should just
+    # be a collection of nodes (and optionally tags).
+    #
+    # Another related thought is that maybe I need to make a link type
+    # that lets you specify the namespace and unique ID of the
+    # node. This brings up a bunch of questions, like should these
+    # links get their own separate ID, and what do we do with them?
+    # They could be like capabilities, but then you have to query the
+    # node for it and it starts getting mushy. I need to spend some
+    # more time thinking about this.
+    def link(self, node_id: str) -> None:
+        """link adds the node_id to the list of links for the node."""
+        self.links[node_id] += 1
+
 
 class Graph:
-    links: Dict[str, Set[str]]
     tags: Dict[str, Set[str]]
     nodes: Dict[str, Node]
     namespace: str
@@ -69,11 +87,14 @@ class Graph:
     __slots__ = ["links", "tags", "nodes", "namespace"]
 
     def __init__(self) -> None:
-        self.links = {}
         self.tags = {}
         self.nodes = {}
         self.namespace = str(uuid.uuid4())
 
+    # I originally wanted to have another method called link_id that
+    # would take a pair of strings, but that doesn't let me add the
+    # node ID in.  I haven't thought through the implications of
+    # adding a link to a node that the graph doesn't know about.
     def link(self, node1: Node, node2: Node) -> None:
         if not node1.id in self.nodes:
             self.add_node(node1)
@@ -81,17 +102,5 @@ class Graph:
         if not node2.id in self.nodes:
             self.add_node(node2)
 
-        self.link_id(node1.id, node2.id)
-
-    def link_id(self, node1: str, node2: str) -> None:
-        if not node1 in self.links:
-            self.links[node1] = set()
-        if not node2 in self.links:
-            self.links[node2] = set()
-
-        self.links[node1].add(node2)
-        self.links[node2].add(node1)
-
-    def add_node(self, node: Node) -> str:
-        self.nodes[node.id] = node
-        return node.id
+        node1.link(node2.id)
+        node2.link(node1.id)
