@@ -1,8 +1,10 @@
+from __future__ import annotations  # need to return Cell from Cell
 from typing import Counter, Dict, List, Set
+import collections
 import uuid
 
 
-def __decode_text__(s, codec='utf-8'):
+def __decode_text__(s, codec="utf-8"):
     return s.decode(codec)
 
 
@@ -17,7 +19,7 @@ class Cell:
     id: str
 
     # The contents of a cell should just be bytes. This lets you shove
-    # anything in them, and leave it up to the 
+    # anything in them, and leave it up to the UI to render.
     contents: bytes
 
     def __init__(self, contents: bytes) -> None:
@@ -28,7 +30,7 @@ class Cell:
         return decoder(self.contents)
 
     def execute(self) -> str:
-        return ''
+        return ""
 
     def dup(self) -> Cell:
         return Cell(self.contents)
@@ -44,22 +46,22 @@ class Node:
     # that way quickly), but str->any is too open ended. What's the
     # Goldilocks type?
 
-    __slots__ = ["id", "cells"]
+    __slots__ = ["id", "cells", "links"]
 
     def __init__(self) -> None:
         self.id = str(uuid.uuid4())
         self.cells = []
-        self.links = set()
+        self.links = collections.Counter()
 
     def add(self, cell: Cell) -> str:
         self.cells.append(cell)
         return cell.id
 
     def render_all(self) -> str:
-        rendered = ''
+        rendered = ""
         for cell in self.cells:
             rendered += cell.render()
-        return rendered 
+        return rendered
 
     # Linking is tricky. Who should know about the relationship
     # between two nodes? When I started out writing this, it seemed
@@ -104,3 +106,6 @@ class Graph:
 
         node1.link(node2.id)
         node2.link(node1.id)
+
+    def add_node(self, node: Node) -> None:
+        self.nodes[node.id] = node
