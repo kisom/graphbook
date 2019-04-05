@@ -1,0 +1,11 @@
+b	back
+d	delete cell
+e	edit
+l	link
+n	new (node, cell)
+p	play (run code)
+q	quit
+r	root node
+u	undo
+x	unlink
+
