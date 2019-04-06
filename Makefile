@@ -4,11 +4,14 @@ init:
 init_dev: init
 	pip3 install -r requirements-dev.txt
 
-test:
+test: check
 	py.test tests
 
 check:
-	black graphbook
+	black graphbook --check
 	mypy -p graphbook
 
-.PHONY: init tets
+format:
+	black graphbook
+
+.PHONY: check format init init_dev test
