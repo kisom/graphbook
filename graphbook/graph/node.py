@@ -2,15 +2,15 @@
 # type.
 from __future__ import annotations
 
-from typing import Dict, List
+from typing import List, Set
 from graphbook.graph.cell import Cell
-import collections
 import uuid
+
 
 class Node:
     id: str
     cells: List[Cell]
-    links: Dict[str, int]
+    links: Set[str]
     tags: Set[str]
 
     # probably useful too: tags, metadata... need to think about how
@@ -23,7 +23,7 @@ class Node:
     def __init__(self) -> None:
         self.id = str(uuid.uuid4())
         self.cells = []
-        self.links = []
+        self.links = set()
         self.tags = set()
 
     def add(self, cell: Cell) -> str:
@@ -51,10 +51,12 @@ class Node:
     # more time thinking about this.
     def link(self, node_id: str) -> None:
         """link adds the node_id to the list of links for the node."""
-        if not node_id in self.links:
-            self.links.append(node_id)
+        self.links.add(node_id)
 
-    def __eq__(self, other: Node) -> bool:
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Node):
+            return NotImplemented
+
         # Two equal nodes must have the same ID.
         if self.id != other.id:
             return False

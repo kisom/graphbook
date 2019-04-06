@@ -41,7 +41,7 @@ class Cell:
         A Cell should be initialised with some contents, which is just
         a byte array.
         """
-        
+
         self.id = str(uuid.uuid4())
         self.contents = contents
 
@@ -56,7 +56,7 @@ class Cell:
     def is_executable(self) -> bool:
         """A plain Cell isn't executable."""
         return False
-    
+
     def execute(self) -> str:
         """Execute the contents of the cell."""
         return ""
@@ -69,8 +69,10 @@ class Cell:
         """
         return Cell(self.contents)
 
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Cell):
+            return NotImplemented
 
-    def __eq__(self, other: Cell) -> bool:
         """Two Cells are equal if they have the same id and contents."""
         if self.id != other.id:
             return False

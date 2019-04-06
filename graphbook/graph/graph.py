@@ -2,6 +2,7 @@ from typing import Dict, Set
 from graphbook.graph.node import Node
 import uuid
 
+
 class Graph:
     tags: Dict[str, Set[str]]
     nodes: Dict[str, Node]
