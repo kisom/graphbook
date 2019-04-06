@@ -1,4 +1,5 @@
 from typing import Dict, Set
-from graphbook.graph.node import Node
-from graphbook.graph.cell import Cell
-from graphbook.graph.graph import Graph
+
+import graphbook.graph.node as node
+import graphbook.graph.cell as cell
+import graphbook.graph.graph as graph

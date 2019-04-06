@@ -1,3 +1,3 @@
 import graphbook.graph
 
-notebook: graph.Graph = graph.Graph()
+notebook: graph.graph.Graph = graph.graph.Graph()

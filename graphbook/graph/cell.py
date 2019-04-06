@@ -13,6 +13,7 @@ A cell should have three methods:
 # This import allows specifying the class being defined as the return
 # type of the cell.
 from __future__ import annotations
+from typing import Dict
 import uuid
 
 __DEFAULT_CODEC__: str = "utf-8"
@@ -36,6 +37,10 @@ class Cell:
     # anything in them, and leave it up to the UI to render.
     contents: bytes
 
+    type: str
+
+    __slots__ = ["id", "contents", "type"]
+
     def __init__(self, contents: bytes) -> None:
         """
         A Cell should be initialised with some contents, which is just
@@ -44,6 +49,7 @@ class Cell:
 
         self.id = str(uuid.uuid4())
         self.contents = contents
+        self.type = ""
 
     def render(self, decoder=__decode_text__) -> str:
         """
@@ -78,3 +84,34 @@ class Cell:
             return False
 
         return self.contents == other.contents
+
+    def dump(self) -> Dict[str, object]:
+        """Return a dictionary that represents a cell."""
+
+        # HACK: this makes it easier to edit nodes before the UI has usable editing support.
+        return {
+            "id": self.id,
+            "type": self.type,
+            "contents": self.contents.decode(__DEFAULT_CODEC__),
+        }
+
+
+__REGISTRY: Dict[str, object] = {"": Cell}
+
+
+def register_type(kind: str, constructor: object) -> None:
+    """Register a new typestring and the type it represents."""
+    global __REGISTRY
+    __REGISTRY[kind] = constructor
+
+
+def load_cell(obj: Dict[str, object]) -> Cell:
+    """load cell takes an object from Cell.dump() and turns it back into a cell."""
+
+    constructor: object = Cell
+    if "type" in obj and obj["type"] in __REGISTRY:
+        constructor = __REGISTRY[str(obj["type"])]
+
+    cell = constructor(obj["contents"].encode(__DEFAULT_CODEC__))
+    cell.id = obj["id"]
+    return cell

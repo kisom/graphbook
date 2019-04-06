@@ -1,3 +1,6 @@
+"""
+A graph is comprised of nodes, which are themselves comprised of cells.
+"""
 # This import allows specifying the class being defined as the return
 # type.
 from __future__ import annotations
@@ -8,6 +11,11 @@ import uuid
 
 
 class Node:
+    """
+    A Node represents the idea of a page in a notebook. It's a collection
+    of Cells alongside some metadata, including links.
+    """
+
     id: str
     cells: List[Cell]
     links: Set[str]
