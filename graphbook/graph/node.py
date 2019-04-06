@@ -27,10 +27,12 @@ class Node:
         self.tags = set()
 
     def add(self, cell: Cell) -> str:
+        """Append a Cell to this Node."""
         self.cells.append(cell)
         return cell.id
 
     def render_all(self) -> str:
+        """Render all Cells in this Node."""
         rendered = ""
         for cell in self.cells:
             rendered += cell.render()
@@ -79,9 +81,17 @@ class Node:
 
         return True
 
+    # TODO: how to communicate tag changes to a graph?
+
+    def is_tagged(self, tag: str) -> bool:
+        """Return True if this node has been tagged with `tag`."""
+        return tag in self.tags
+
     def tag(self, tag: str) -> None:
+        """Add a tag to this node."""
         self.tags.add(tag)
 
     def untag(self, tag: str) -> None:
+        """Remove a tag from this node."""
         if tag in self.tags:
             self.tags.remove(tag)
