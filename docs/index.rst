@@ -10,6 +10,7 @@ Welcome to GraphBook's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   intro
    graph
 
 
