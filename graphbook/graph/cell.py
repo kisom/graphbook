@@ -13,6 +13,7 @@ A cell should have three methods:
 # This import allows specifying the class being defined as the return
 # type of the cell.
 from __future__ import annotations
+from abcmeta import ABCMeta
 from typing import Dict
 import uuid
 
