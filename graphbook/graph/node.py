@@ -31,12 +31,12 @@ class Node:
 
     def remove(self, index: Optional[int] = None) -> None:
         """Remove the cell at the given index."""
-        if index:
+        if index is not None:
             self.cells = self.cells[:index] + self.cells[index + 1 :]
 
     def insert(self, Cell: cell.Cell, index: int):
         """Insert cell at the given index."""
-        pass
+        self.cells.insert(index, cell)
 
     def to_obj(self):
         """Return a dictionary of the node suitable for serialising."""
