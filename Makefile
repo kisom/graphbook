@@ -1,8 +1,9 @@
+PIP ?=	pip3
 init:
-	pip3.7 install -r requirements.txt --user
+	$(PIP) install -r requirements.txt --user
 
 init_dev: init
-	pip3.7 install -r requirements-dev.txt --user
+	$(PIP) install -r requirements-dev.txt --user
 
 test: check
 	py.test tests

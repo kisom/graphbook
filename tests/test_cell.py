@@ -21,6 +21,6 @@ def test_cell():
 def test_cell_yaml():
     c1 = cell.TextCell(b'hello, world')
     cobj = c1.to_obj()
-    cser = yaml.dumps(cobj)
-    c2 = cell.load_cell(yaml.loads(cser))
+    cser = yaml.dump(cobj)
+    c2 = cell.load_cell(yaml.load(cser))
     assert(c1 == c2)
