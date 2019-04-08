@@ -6,7 +6,7 @@ n1 = None
 
 def test_node():
     global n1
-    n1 = node.Node()
+    n1 = node.Node("Nodes are a collection of cells")
     cells = [b'hello world', b'goodbye, world', b'text of a textual nature']
     cells = list(map(cell.TextCell, cells))
     for c in cells:
@@ -53,3 +53,4 @@ def test_insert():
 
     n1.insert(37, 3)
     assert(n1.cells[3] == 37)
+    n1.cells = cells

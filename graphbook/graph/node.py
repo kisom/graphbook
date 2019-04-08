@@ -16,13 +16,15 @@ class Node:
     """
 
     id: str
+    title: str
     cells: List[cell.Cell]
     links: Set[str]
     tags: Set[str]
 
-    def __init__(self) -> None:
+    def __init__(self, title: str) -> None:
         """Initialise a blank cell, generating a new random ID."""
         self.id = str(uuid4())
+        self.title = title
         self.cells = []
         self.links = set()
         self.tags = set()
@@ -44,6 +46,7 @@ class Node:
         """Return a dictionary of the node suitable for serialising."""
         return {
             "id": self.id,
+            "title": self.title,
             "links": list(self.links),
             "cells": [c.to_obj() for c in self.cells],
             "tags": list(self.tags),
@@ -58,10 +61,12 @@ class Node:
         """Parse ``obj`` as a node."""
         if "id" not in obj:
             raise (ValueError("object isn't a Node: missing id"))
+        if "title" not in obj:
+            raise (ValueError("object isn't a Node: missing title"))
         if "links" not in obj:
-            raise (ValueError("object isn't a TextCell: missing links"))
+            raise (ValueError("object isn't a Node: missing links"))
 
-        n = cls()
+        n = cls(obj["title"])
         n.id = obj["id"]
         n.links = set(obj["links"])
         if "cells" in obj:
@@ -77,6 +82,9 @@ class Node:
             return NotImplemented
 
         if self.id != other.id:
+            return False
+
+        if self.title != other.title:
             return False
 
         if self.links != other.links:

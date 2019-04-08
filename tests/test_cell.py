@@ -23,3 +23,6 @@ def test_cell_yaml():
     cser = to_yaml(cobj)
     c2 = cell.load_cell(from_yaml(cser))
     assert(c1 == c2)
+
+    c3 = c1.dup()
+    assert(c1 != c3)

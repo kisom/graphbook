@@ -44,6 +44,12 @@ class Cell:
         """Return a dictionary of the cell suitable for serialising."""
         raise (NotImplementedError)
 
+    def dup(self) -> Cell:
+        """Return a duplicate of this cell with a different ID."""
+        new_cell = Cell(self.contents)
+        new_cell.type = self.type
+        return new_cell
+
     @classmethod
     def from_obj(cls, obj: Dict[str, str]) -> Cell:
         """Parse an object as a Cell."""

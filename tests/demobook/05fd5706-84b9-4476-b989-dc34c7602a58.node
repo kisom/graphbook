@@ -1,0 +1,13 @@
+id: 05fd5706-84b9-4476-b989-dc34c7602a58
+title: Graphbook Nodes
+tags:
+- nodes
+- node
+cells:
+- id: d1d64bcf-7c81-4e3f-8047-668eace3b473
+  type: text
+  contents: |
+    A Node consists of a list of cells, and a list of links to other
+    nodes and a list of tags.
+links:
+- 77fd24dc-714d-464e-9252-2b5cfa130a74

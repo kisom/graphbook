@@ -1,0 +1,19 @@
+id: 77fd24dc-714d-464e-9252-2b5cfa130a74
+title: Welcome to Graphbook
+tags:
+- graphbook
+- nodes
+- cells
+cells:
+- id: 21116085-8c99-42ab-b789-33b58d1918e7
+  type: text
+  contents: |
+    A GraphBook is a tool for organising knowledge alongside small
+    snippets of code to demonstrate something.
+- id: aaec2cd7-6d27-4ca1-9a01-6843f8c2170e
+  type: text
+  contents: |
+    A Graphbook consists of nodes their cells.
+links:
+- 05fd5706-84b9-4476-b989-dc34c7602a58
+- 93919bee-9cf7-4599-b6ed-7238c8242737

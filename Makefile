@@ -6,7 +6,7 @@ init_dev: init
 	$(PIP) install -r requirements-dev.txt --user
 
 test: check
-	py.test tests
+	py.test --cov graphbook tests
 
 check:
 	black graphbook --check

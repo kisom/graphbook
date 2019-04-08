@@ -1,0 +1,12 @@
+id: 93919bee-9cf7-4599-b6ed-7238c8242737
+title: Tags
+tags:
+- tags
+cells:
+- id: a7769b30-d407-4a96-9782-c8788abaade8
+  type: text
+  contents: |
+    A tag is just a string that identifies a keyword or concept
+    covered by a node. It's intended to assist in building one's
+    personal knowledge repository.
+links: []
