@@ -13,6 +13,9 @@ def test_node():
     for c in cells:
         n1.add(c)
 
+    n1.tag("test")
+    n1.tag("world")
+
     assert(len(n1.cells) == len(cells))
     nobj = n1.to_obj()
     n2 = node.Node.from_obj(nobj)

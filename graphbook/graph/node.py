@@ -3,7 +3,7 @@
 Nodes serve as pages in a notebook. They're a list of cells, along with
 links and other metadata.
 """
-
+from __future__ import annotations
 import graphbook.graph.cell as cell
 from typing import List, Optional, Set
 from uuid import uuid4
@@ -18,12 +18,14 @@ class Node:
     id: str
     cells: List[cell.Cell]
     links: Set[str]
+    tags: Set[str]
 
     def __init__(self) -> None:
         """Initialise a blank cell, generating a new random ID."""
         self.id = str(uuid4())
         self.cells = []
         self.links = set()
+        self.tags = set()
 
     def add(self, cell: cell.Cell) -> None:
         """Append cell to this node's cell list."""
@@ -34,7 +36,7 @@ class Node:
         if index is not None:
             self.cells = self.cells[:index] + self.cells[index + 1 :]
 
-    def insert(self, Cell: cell.Cell, index: int):
+    def insert(self, cell: cell.Cell, index: int):
         """Insert cell at the given index."""
         self.cells.insert(index, cell)
 
@@ -44,7 +46,12 @@ class Node:
             "id": self.id,
             "links": list(self.links),
             "cells": [c.to_obj() for c in self.cells],
+            "tags": list(self.tags),
         }
+
+    def link(self, node: Node) -> None:
+        """Register a link to another node."""
+        self.links.add(node.id)
 
     @classmethod
     def from_obj(cls, obj):
@@ -59,6 +66,9 @@ class Node:
         n.links = set(obj["links"])
         if "cells" in obj:
             n.cells = [cell.load_cell(cobj) for cobj in obj["cells"]]
+
+        if "tags" in obj:
+            n.tags = set(obj["tags"])
 
         return n
 
@@ -79,4 +89,16 @@ class Node:
             if self.cells[i] != other.cells[i]:
                 return False
 
+        if self.tags != other.tags:
+            return False
+
         return True
+
+    def tag(self, tag: str) -> None:
+        """Add a tag to this node."""
+        self.tags.add(tag)
+
+    def untag(self, tag: str) -> None:
+        """Remove a tag from this node."""
+        if tag in self.tags:
+            self.tags.remove(tag)

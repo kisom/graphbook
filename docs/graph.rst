@@ -20,6 +20,6 @@ Here's some docs.
 Graphs
 ------
 
-.. automodule:: graphbook.graph.graph
+.. automodule:: graphbook.graph.notebook
    :members:
 
