@@ -8,11 +8,13 @@ import graphbook.graph.cell as cell
 from typing import List, Optional, Set
 from uuid import uuid4
 
+
 class Node:
     """
     Nodes serve as pages in a notebook. They're a list of cells, along with
     links to other nodes.
     """
+
     id: str
     cells: List[cell.Cell]
     links: Set[str]
