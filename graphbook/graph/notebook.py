@@ -19,3 +19,4 @@ class Graph:
         self.id = str(uuid4())
         self.nodes = {}
         self.tags = {}
+

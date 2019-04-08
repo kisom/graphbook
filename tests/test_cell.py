@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import yaml
-from context import cell
+from context import cell, to_yaml, from_yaml
 
 def test_cell():
     print('[+] constructing cell')
@@ -21,6 +20,6 @@ def test_cell():
 def test_cell_yaml():
     c1 = cell.TextCell(b'hello, world')
     cobj = c1.to_obj()
-    cser = yaml.dump(cobj)
-    c2 = cell.load_cell(yaml.load(cser))
+    cser = to_yaml(cobj)
+    c2 = cell.load_cell(from_yaml(cser))
     assert(c1 == c2)

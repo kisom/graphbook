@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from context import cell, node
-import yaml
+from context import cell, node, to_yaml, from_yaml
 
 n1 = None
 
@@ -21,10 +20,12 @@ def test_node():
     n2 = node.Node.from_obj(nobj)
     assert(n1 == n2)
 
+    assert('test' in n2.tags)
+
 def test_node_yaml():
     nobj = n1.to_obj()
-    nser = yaml.dump(nobj)
-    n2 = node.Node.from_obj(yaml.load(nser))
+    nser = to_yaml(nobj)
+    n2 = node.Node.from_obj(from_yaml(nser))
     assert(n1 == n2)
 
 def test_remove():
