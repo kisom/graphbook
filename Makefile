@@ -1,4 +1,5 @@
-PIP ?=	pip3
+PIP ?=	$(shell command -v pip3.7 || command -v pip3)
+
 init:
 	$(PIP) install -r requirements.txt --user
 
@@ -23,5 +24,7 @@ doc_serve:
 
 doc_watch:
 	make doc && ( make doc_serve & ) && cd docs && watch make html
+
+print-%: ; @echo $* is $($*)
 
 .PHONY: check format init init_dev test doc doc_serve
