@@ -1,5 +1,5 @@
 [build]
 base = "docs"
 command = "make html"
-publish = "_build/html"
+publish = "docs/_build/html"
 
