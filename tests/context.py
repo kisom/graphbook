@@ -6,3 +6,4 @@ import graphbook.graph.cell as cell
 import graphbook.graph.node as node
 import graphbook.graph.notebook as notebook
 from graphbook.graph.serial import from_yaml, to_yaml
+from graphbook.vm import uscheme
