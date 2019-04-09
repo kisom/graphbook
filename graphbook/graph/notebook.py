@@ -85,3 +85,29 @@ class Notebook:
             if tag not in self.tags:
                 self.tags[tag] = set()
             self.tags[tag].add(tag)
+
+    def titles(self, text: str = "", cased: bool = False) -> List[NodeEntry]:
+        """
+        Return the list of titles for all nodes; if text is not empty, nodes whose
+        titles start with or contain text will be returned.
+        """
+        startswith: List[NodeEntry] = []
+        contains: List[NodeEntry] = []
+
+        if not text:
+            return sorted(self.nodes.values())
+
+        if not cased:
+            text = text.lower()
+
+        for n in self.nodes.values():
+            title: str = n.title
+            if not cased:
+                title = n.title.lower()
+                if title.startswith(text):
+                    startswith.append(n)
+                elif text in title:
+                    contains.append(n)
+
+        startswith.extend(contains)
+        return startswith

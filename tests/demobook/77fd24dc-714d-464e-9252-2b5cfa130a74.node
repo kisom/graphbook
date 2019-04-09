@@ -13,7 +13,13 @@ cells:
 - id: aaec2cd7-6d27-4ca1-9a01-6843f8c2170e
   type: text
   contents: |
-    A Graphbook consists of nodes their cells.
+    A Graphbook consists of nodes and their cells.
+- id: f71f20a6-5b0e-11e9-8d43-7315a4da9119
+  type: uscheme
+  contents: |
+    (define square (lambda (x) (* x x)))
+    (define circle-area (lambda (r) (* pi (square r))))
+    (circle-area 3)
 links:
 - 05fd5706-84b9-4476-b989-dc34c7602a58
 - 93919bee-9cf7-4599-b6ed-7238c8242737

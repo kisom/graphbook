@@ -110,3 +110,7 @@ class Node:
         """Remove a tag from this node."""
         if tag in self.tags:
             self.tags.remove(tag)
+
+    def render(self) -> str:
+        """Render all the nodes."""
+        return "\n\n".join([c.render() for c in self.cells])

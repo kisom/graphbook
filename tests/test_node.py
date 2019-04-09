@@ -54,3 +54,18 @@ def test_insert():
     n1.insert(37, 3)
     assert(n1.cells[3] == 37)
     n1.cells = cells
+
+def test_render():
+    cells = [
+        cell.TextCell(b'Hello, world.'),
+        cell.TextCell(b'Goodbye, world.'),
+    ]
+
+    rendered = """Hello, world.
+
+Goodbye, world."""
+
+    n1 = node.Node("Of worlds and things")
+    n1.add(cells[0])
+    n1.add(cells[1])
+    assert(n1.render() == rendered)

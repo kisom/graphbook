@@ -6,8 +6,9 @@ init:
 init_dev: init
 	$(PIP) install -r requirements-dev.txt --user
 
+# Explicitly ignore the UI code, which isn't tested.
 test: check
-	py.test --cov graphbook tests
+	py.test --cov graphbook.graph --cov graphbook.vm tests
 
 check:
 	black graphbook --check
