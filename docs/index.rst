@@ -12,6 +12,7 @@ Welcome to GraphBook's documentation!
 
    intro
    graph
+   vm
 
 
 Indices and tables

@@ -17,8 +17,8 @@ Here's some docs.
    :members:
 
 
-Graphs
-------
+Notebooks
+---------
 
 .. automodule:: graphbook.graph.notebook
    :members:
