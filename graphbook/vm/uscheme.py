@@ -1,7 +1,13 @@
 # -*- coding: utf-8 -*-
 """
 uscheme implements a microscheme from Peter Norvig's lis.py - this
-is the more primitive of the two versions.
+is the more primitive of the two versions. This isn't a full Scheme,
+and in particular has the following caveats:
+
+1. The only types are symbols, ints, and floats.
+2. Function definition must be done via ``(define func (lambda ...))``;
+   doing ``(define func ...)`` will result in an error.
+
 """
 
 # Caveat emptor: this is a mostly untyped file, as I haven't figured out
@@ -9,7 +15,7 @@ is the more primitive of the two versions.
 
 from collections import ChainMap as Environment
 from collections import namedtuple
-from typing import List
+from typing import Any, Dict, List
 from graphbook.graph import cell
 
 import math
@@ -38,6 +44,7 @@ def atom(token: str) -> Atom:  # type: ignore
 
 
 def expression_from_tokens(tokens: list) -> Exp:  # type: ignore
+    """Given a list of tokens, return the first expression that was found."""
     if not tokens:
         raise SyntaxError("unexpected EOF")
     token = tokens.pop(0)
@@ -54,6 +61,7 @@ def expression_from_tokens(tokens: list) -> Exp:  # type: ignore
 
 
 def standard_env():
+    """Return the standard environment."""
     env = {}
     env.update(vars(math))
 
@@ -106,10 +114,6 @@ def standard_env():
     return env
 
 
-def parse(program: str) -> Exp:  # type: ignore
-    return expression_from_tokens(tokenise(program))
-
-
 def eval(exp, env):
     "Evaluate an expression in an environment."
     if isinstance(exp, Symbol):
@@ -147,7 +151,22 @@ class Procedure:
 
 
 class Interpreter:
-    def __init__(self, scrub_keys=None, extra_env=None, program=None):
+    """
+    A microscheme interpreter that maintains its own environment across runs.
+    """
+    def __init__(self, scrub_keys: List[str] = None, extra_env: Dict[str, Any] = None, program: str = None):
+        """
+        Intialise the environment with the standard environment.
+
+        If ``scrub_keys`` is present, it is a list of names from the standard
+        environment that should be dropped.
+
+        If ``extra_env`` is present, it should be a dictionary of names to Symbols
+        that should be added to the initial environment.
+
+        If ``program`` is present, it is a program that will be evaluated after
+        setting up the environment.
+        """
         self.scrub_keys = scrub_keys
         self.extra_env = extra_env
         self.symtab = {}
@@ -182,6 +201,7 @@ class Interpreter:
 
 
 def standalone(paths):
+    """Standalone interpreter that will be run across the paths presented."""
     interpreter = Interpreter()
     for path in paths:
         sys.stdout.write(path + ": ")
