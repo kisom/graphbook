@@ -3,8 +3,9 @@
 A Notebook is the top-level GraphBook abstraction.
 """
 
+from __future__ import annotations
 from collections import namedtuple
-from typing import Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional, Set
 import graphbook.graph.node as node
 from graphbook.graph.serial import from_yaml, to_yaml
 import os
@@ -16,14 +17,37 @@ class NodeEntry:
     title: str
     tags: List[str]
     links: List[str]
-    
-    def __init__(self, id: str, title: str, tags: Set[str], links: List[str]):
+
+    def __init__(self, id: str, title: str, tags: Set[str], links: Set[str]):
         self.id = id
         self.title = title
         self.tags = list(tags)
-        self.links = links
+        self.links = list(links)
 
+    def __lt__(self, other) -> bool:
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self.id < other.id
+
+    def to_obj(self) -> Dict[str, Any]:
+        """Convert a ``NodeEntry`` to an object."""
+        return {
+            'id': self.id,
+            'title': self.title,
+            'tags': self.tags,
+            'links': self.links,
+        }
+
+    @classmethod
+    def from_obj(cls, obj: Dict[str, Any]) -> NodeEntry:
+        if 'id' not in obj:
+            pass
+        if 'id' not in 'title':
+            pass
         
+        pass
+
+
 class Notebook:
     """A Notebook points to a directory of Nodes."""
 

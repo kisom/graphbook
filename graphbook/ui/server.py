@@ -17,9 +17,17 @@ notebook = graph.notebook.Notebook(notebook_dir)
 @app.route("/")
 def index():
     nodes = notebook.select()
-    return json.dumps(nodes)
+    return json.dumps([node.to_obj() for node in nodes])
+
+@app.route("/node/<node_id>", methods=['GET', 'POST'])
+def node_route(node_id):
+    node = notebook.noder(node_id)
+    if node:
+        node = node.to_obj()
+    return json.dumps({
+        'node': node,
+    })
+
     
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run()
