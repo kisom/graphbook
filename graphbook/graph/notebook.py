@@ -11,9 +11,19 @@ import os
 from uuid import uuid4
 
 
-NodeEntry = namedtuple("NodeEntry", ("id", "title", "tags", "links"))
+class NodeEntry:
+    id: str
+    title: str
+    tags: List[str]
+    links: List[str]
+    
+    def __init__(self, id: str, title: str, tags: Set[str], links: List[str]):
+        self.id = id
+        self.title = title
+        self.tags = list(tags)
+        self.links = links
 
-
+        
 class Notebook:
     """A Notebook points to a directory of Nodes."""
 
@@ -94,7 +104,7 @@ class Notebook:
                 self.tags[tag] = set()
             self.tags[tag].add(tag)
 
-    def titles(self, text: str = "", cased: bool = False) -> List[NodeEntry]:
+    def select(self, text: str = "", cased: bool = False) -> List[NodeEntry]:
         """
         Return the list of titles for all nodes; if text is not empty, nodes whose
         titles start with or contain text will be returned.

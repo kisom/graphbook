@@ -1,3 +1,4 @@
+flask
 npyscreen
 pyyaml
 uuid

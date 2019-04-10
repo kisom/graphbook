@@ -10,8 +10,8 @@ demobook = notebook.Notebook("tests/demobook")
 
 def test_demobook():
     assert(len(demobook.nodes) == 3)
-    assert(len(demobook.nodes) == len(demobook.titles()))
-    results = demobook.titles('graph')
+    assert(len(demobook.nodes) == len(demobook.select()))
+    results = demobook.select('graph')
     assert(len(results) == 2)
 
     node_ids = list(demobook.nodes.keys())
