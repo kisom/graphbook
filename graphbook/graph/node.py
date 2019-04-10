@@ -77,6 +77,27 @@ class Node:
 
         return n
 
+    def tag(self, tag: str) -> None:
+        """Add a tag to this node."""
+        self.tags.add(tag)
+
+    def untag(self, tag: str) -> None:
+        """Remove a tag from this node."""
+        if tag in self.tags:
+            self.tags.remove(tag)
+
+    def render(self) -> str:
+        """Render all the nodes."""
+        return "\n\n".join([c.render() for c in self.cells])
+
+    # node is subscriptable and supports equality checking.
+
+    def __getitem__(self, i: int) -> cell.Cell:
+        return self.cells[i]
+
+    def __setitem__(self, i: int, c: cell.Cell):
+        self.cells[i] = c
+
     def __eq__(self, other) -> bool:
         if not isinstance(other, self.__class__):
             return NotImplemented
@@ -101,16 +122,3 @@ class Node:
             return False
 
         return True
-
-    def tag(self, tag: str) -> None:
-        """Add a tag to this node."""
-        self.tags.add(tag)
-
-    def untag(self, tag: str) -> None:
-        """Remove a tag from this node."""
-        if tag in self.tags:
-            self.tags.remove(tag)
-
-    def render(self) -> str:
-        """Render all the nodes."""
-        return "\n\n".join([c.render() for c in self.cells])

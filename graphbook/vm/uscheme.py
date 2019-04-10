@@ -15,8 +15,7 @@ and in particular has the following caveats:
 
 from collections import ChainMap as Environment
 from collections import namedtuple
-from typing import Any, Dict, List
-from graphbook.graph import cell
+from typing import Any, Dict, List, Optional
 
 import math
 import operator as op
@@ -154,7 +153,9 @@ class Interpreter:
     """
     A microscheme interpreter that maintains its own environment across runs.
     """
-    def __init__(self, scrub_keys: List[str] = None, extra_env: Dict[str, Any] = None, program: str = None):
+
+    def __init__(self, program: Optional[str] = None) -> None:
+
         """
         Intialise the environment with the standard environment.
 
@@ -167,21 +168,13 @@ class Interpreter:
         If ``program`` is present, it is a program that will be evaluated after
         setting up the environment.
         """
-        self.scrub_keys = scrub_keys
-        self.extra_env = extra_env
-        self.symtab = {}
         self.reset()
-        if program:
-            self.eval(program)
+        # if program:
+        #     self.eval(program)
 
     def reset(self):
         """reset the interpreter's environment to the standard env."""
         self.env = standard_env()
-        if self.scrub_keys:
-            for key in self.scrub_keys:
-                del self.env[key]
-        if self.extra_env:
-            self.env.update(self.extra_env)
 
     def eval(self, program: str) -> Exp:  # type: ignore
         """evaluate a microscheme program."""
@@ -200,12 +193,15 @@ class Interpreter:
             return self.eval(pgm_file.read())
 
 
-def standalone(paths):
+def standalone(paths) -> Any:
     """Standalone interpreter that will be run across the paths presented."""
     interpreter = Interpreter()
+    result = None
     for path in paths:
         sys.stdout.write(path + ": ")
-        print(interpreter.load_file(path))
+        result = interpreter.load_file(path)
+        print(result)
+    return result
 
 
 if __name__ == "__main__":

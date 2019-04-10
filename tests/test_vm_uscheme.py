@@ -34,8 +34,7 @@ def test_uscheme_load_file():
     os.close(fd)
 
     try:
-        interpreter = uscheme.Interpreter()
-        result = interpreter.load_file(tfile)
+        result = uscheme.standalone([tfile])
         assert(result == 28.274333882308138)
     finally:
         os.remove(tfile)

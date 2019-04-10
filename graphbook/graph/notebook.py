@@ -84,7 +84,7 @@ class Notebook:
         """
         self._update_node(_node)
         nobj = _node.to_obj()
-        with open(os.path.join(self.path, _node.id), "wt") as node_file:
+        with open(os.path.join(self.path, _node.id + ".node"), "wt") as node_file:
             node_file.write(to_yaml(nobj))
 
     def _update_node(self, _node: node.Node) -> None:

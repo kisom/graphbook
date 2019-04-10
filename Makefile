@@ -14,6 +14,9 @@ check:
 	black graphbook --check --quiet
 	mypy -p graphbook
 
+coverage: check
+	py.test --cov-report html --cov graphbook.graph --cov graphbook.vm tests
+
 format:
 	black --quiet graphbook
 

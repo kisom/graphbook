@@ -14,13 +14,18 @@ def test_node():
 
     n1.tag("test")
     n1.tag("world")
-
+    assert(len(n1.tags) == 2)
+    
     assert(len(n1.cells) == len(cells))
     nobj = n1.to_obj()
     n2 = node.Node.from_obj(nobj)
     assert(n1 == n2)
 
     assert('test' in n2.tags)
+
+    n1.untag("test")
+    assert(len(n1.tags) == 1)
+    
 
 def test_node_yaml():
     nobj = n1.to_obj()
@@ -42,6 +47,13 @@ def test_remove():
     n1.remove(0)
     assert(len(n1.cells) == 0)
 
+    n1.cells = [1, 2, 3]
+    assert(n1[0] == 1)
+    assert(n1[1] == 2)
+    assert(n1[2] == 3)
+    n1[1] = 4
+    assert(n1[1] == 4)
+    
     n1.cells = cells
 
 def test_insert():
@@ -69,3 +81,9 @@ Goodbye, world."""
     n1.add(cells[0])
     n1.add(cells[1])
     assert(n1.render() == rendered)
+
+def test_link():
+    n2 = node.Node("A linked node")
+    n2.add(cell.TextCell(b"linkages and mechanisms"))
+
+    n1.link(n2)
