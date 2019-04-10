@@ -156,6 +156,7 @@ class Interpreter:
             self.eval(program)
 
     def reset(self):
+        """reset the interpreter's environment to the standard env."""
         self.env = standard_env()
         if self.scrub_keys:
             for key in self.scrub_keys:
@@ -164,6 +165,7 @@ class Interpreter:
             self.env.update(self.extra_env)
 
     def eval(self, program: str) -> Exp:  # type: ignore
+        """evaluate a microscheme program."""
         tokens = tokenise(program)
         result = None
         while tokens:
@@ -173,10 +175,8 @@ class Interpreter:
             return ""
         return result
 
-    def reset_env(self):
-        self.env = standard_env()
-
     def load_file(self, path):
+        """load the microscheme source file at path and evaluate it."""
         with open(path, "rt") as pgm_file:
             return self.eval(pgm_file.read())
 
