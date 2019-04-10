@@ -11,11 +11,11 @@ test: check
 	py.test --cov graphbook.graph --cov graphbook.vm tests
 
 check:
-	black graphbook --check
+	black graphbook --check --quiet
 	mypy -p graphbook
 
 format:
-	black graphbook
+	black --quiet graphbook
 
 doc:
 	cd docs && make html

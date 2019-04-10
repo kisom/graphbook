@@ -6,8 +6,8 @@ The 'atom' of GraphBook is the Cell.
 from __future__ import annotations
 from abc import ABCMeta, abstractmethod
 from typing import Dict, Optional
+from graphbook.vm import uscheme
 from uuid import uuid4
-import pdb
 
 
 class Cell:
@@ -114,6 +114,31 @@ class TextCell(Cell):
         return cell
 
 
+class MicroSchemeCell(TextCell):
+    """
+    A MicroSchemeCell supports a small Scheme language; note that this is
+    missing many features from a full scheme, but serves as an illustrative
+    language for basic prototyping of ideas. It is based on a TextCell,
+    as the program source is just plain text.
+    """
+
+    def __init__(self, contents: bytes):
+        """A MicroSchemeCell is initialised with a program."""
+        super().__init__(contents)
+        self.type = "uscheme"
+
+    def is_executable(self):
+        return True
+
+    def execute(self) -> str:
+        """
+        Execute the uScheme code in the cell. Each call executes the
+        program in a clean environment.
+        """
+        interpreter = uscheme.Interpreter()
+        return str(interpreter.eval(self.render()))
+
+
 __REGISTRY: Dict[str, Cell] = {}
 
 
@@ -135,3 +160,4 @@ def load_cell(obj: Dict[str, str]) -> Optional[Cell]:
 
 
 register_cell_type("text", TextCell)
+register_cell_type("uscheme", MicroSchemeCell)

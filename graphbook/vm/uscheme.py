@@ -181,31 +181,6 @@ class Interpreter:
             return self.eval(pgm_file.read())
 
 
-class MicroSchemeCell(cell.TextCell):
-    """
-    A MicroSchemeCell supports a small Scheme language; note that this is
-    missing many features from a full scheme, but serves as an illustrative
-    language for basic prototyping of ideas. It is based on a TextCell,
-    as the program source is just plain text.
-    """
-
-    def __init__(self, contents: bytes):
-        """A MicroSchemeCell is initialised with a program."""
-        super().__init__(contents)
-        self.type = "uscheme"
-
-    def is_executable(self):
-        return True
-
-    def execute(self) -> str:
-        """
-        Execute the uScheme code in the cell. Each call executes the
-        program in a clean environment.
-        """
-        uscheme = Interpreter()
-        return str(uscheme.eval(self.render()))
-
-
 def standalone(paths):
     interpreter = Interpreter()
     for path in paths:

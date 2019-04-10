@@ -51,6 +51,7 @@ def main(stdscr, args):
     global search_index
 
     notebook = graph.notebook.Notebook(args.path)
+    pdb.set_trace()
 
     # Probably want to do this outside the function so we don't have
     # to rebuild on each function invocation.
