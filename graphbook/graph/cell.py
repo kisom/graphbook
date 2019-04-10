@@ -120,6 +120,11 @@ class MicroSchemeCell(TextCell):
     missing many features from a full scheme, but serves as an illustrative
     language for basic prototyping of ideas. It is based on a TextCell,
     as the program source is just plain text.
+
+    Caveats: 
+
+    + function definitions must be in the format ``(define fun (lambda ...))``.
+    + strings aren't a separate type.
     """
 
     def __init__(self, contents: bytes):
