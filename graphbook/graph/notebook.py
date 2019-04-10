@@ -5,7 +5,7 @@ A Notebook is the top-level GraphBook abstraction.
 
 from __future__ import annotations
 from collections import namedtuple
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, Iterable, List, Optional, Set
 import graphbook.graph.node as node
 from graphbook.graph.serial import from_yaml, to_yaml
 import os
@@ -13,16 +13,39 @@ from uuid import uuid4
 
 
 class NodeEntry:
+    """
+    A NodeEntry contains metadata about a node that's useful for a
+    frontend to use in place of a full node.
+    """
+
     id: str
     title: str
     tags: List[str]
     links: List[str]
 
-    def __init__(self, id: str, title: str, tags: Set[str], links: Set[str]):
+    def __init__(self, id: str, title: str, tags: Iterable[str], links: Iterable[str]):
         self.id = id
         self.title = title
         self.tags = list(tags)
         self.links = list(links)
+
+    def __eq__(self, other: Any) -> bool:
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+
+        if self.id != other.id:
+            return False
+
+        if self.title != other.title:
+            return False
+
+        if self.tags != other.tags:
+            return False
+
+        if self.links != other.links:
+            return False
+
+        return True
 
     def __lt__(self, other) -> bool:
         if not isinstance(other, self.__class__):
@@ -32,20 +55,24 @@ class NodeEntry:
     def to_obj(self) -> Dict[str, Any]:
         """Convert a ``NodeEntry`` to an object."""
         return {
-            'id': self.id,
-            'title': self.title,
-            'tags': self.tags,
-            'links': self.links,
+            "id": self.id,
+            "title": self.title,
+            "tags": self.tags,
+            "links": self.links,
         }
 
     @classmethod
     def from_obj(cls, obj: Dict[str, Any]) -> NodeEntry:
-        if 'id' not in obj:
-            pass
-        if 'id' not in 'title':
-            pass
-        
-        pass
+        if "id" not in obj:
+            raise (ValueError("object isn't a NodeEntry: missing id"))
+        if "title" not in obj:
+            raise (ValueError("object isn't a NodeEntry: missing title"))
+        if "tags" not in obj:
+            raise (ValueError("object isn't a NodeEntry: missing tags"))
+        if "links" not in obj:
+            raise (ValueError("object isn't a NodeEntry: missing links"))
+
+        return NodeEntry(obj["id"], obj["title"], obj["tags"], obj["links"])
 
 
 class Notebook:
@@ -128,7 +155,9 @@ class Notebook:
                 self.tags[tag] = set()
             self.tags[tag].add(tag)
 
-    def select(self, text: str = "", cased: bool = False) -> List[NodeEntry]:
+    def select(
+        self, text: str = "", cased: bool = False, and_tags: Optional[List[str]] = None
+    ) -> List[NodeEntry]:
         """
         Return the list of titles for all nodes; if text is not empty, nodes whose
         titles start with or contain text will be returned.
@@ -137,19 +166,25 @@ class Notebook:
         contains: List[NodeEntry] = []
 
         if not text:
-            return sorted(self.nodes.values())
-
-        if not cased:
-            text = text.lower()
-
-        for n in self.nodes.values():
-            title: str = n.title
+            startswith = sorted(self.nodes.values())
+        else:
             if not cased:
-                title = n.title.lower()
-                if title.startswith(text):
-                    startswith.append(n)
-                elif text in title:
-                    contains.append(n)
+                text = text.lower()
 
-        startswith.extend(contains)
+            for n in self.nodes.values():
+                title: str = n.title
+                if not cased:
+                    title = n.title.lower()
+                    if title.startswith(text):
+                        startswith.append(n)
+                    elif text in title:
+                        contains.append(n)
+
+                startswith.extend(contains)
+
+        if and_tags:
+            tagset: Set[str] = set(and_tags)
+            startswith = [
+                nentry for nentry in startswith if tagset.issubset(nentry.tags)
+            ]
         return startswith

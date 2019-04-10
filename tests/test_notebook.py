@@ -18,6 +18,13 @@ def test_demobook():
     _node = demobook.noder(node_ids[0])
     assert(_node.id == node_ids[0])
 
+    assert(len(demobook.select('', and_tags=['node'])) < len(demobook.nodes))
+
+def test_is_maybe_path():
+    assert(not(demobook._is_maybe_node('node-a-node')))
+    assert(not(demobook._is_maybe_node('not-a' +'.node')))
+    assert(demobook.noder('not-a-node') is None)
+    
 def test_newnotebook():
     try:
         fd, tempdir = tempfile.mkstemp()
@@ -34,3 +41,6 @@ def test_newnotebook():
     finally:
         shutil.rmtree(tempdir)
     
+def test_nodeentry():
+    nentry = demobook.select()[0]
+    assert(notebook.NodeEntry.from_obj(nentry.to_obj()) == nentry)
