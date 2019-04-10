@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-A Notebook is a graph and some additional metadata.
+A Notebook is the top-level GraphBook abstraction.
 """
 
 from collections import namedtuple
@@ -43,6 +43,7 @@ class Notebook:
         return True
 
     def scan(self) -> int:
+        """Rebuild the internal caches by scanning the notebook directory."""
         self.tags = {}
         self.nodes = {}
 
@@ -59,6 +60,10 @@ class Notebook:
         return len(nodes)
 
     def noder(self, node_id) -> Optional[node.Node]:
+        """
+        Read the node with the given node ID from disk. This will also update the
+        internal caches as necessary.
+        """
         node_path = os.path.join(self.abspath, node_id) + ".node"
         return self._noder(node_path)
 
@@ -74,6 +79,9 @@ class Notebook:
         return node.Node.from_obj(nobj)
 
     def nodew(self, _node: node.Node) -> None:
+        """
+        Write the node to disk. This will update the internal caches as necessary.
+        """
         self._update_node(_node)
         nobj = _node.to_obj()
         with open(os.path.join(self.path, _node.id), "wt") as node_file:

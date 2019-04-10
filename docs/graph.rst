@@ -11,8 +11,6 @@ Cells
 Nodes
 -----
 
-Here's some docs.
-
 .. automodule:: graphbook.graph.node
    :members:
 
