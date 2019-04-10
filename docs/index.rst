@@ -3,8 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to GraphBook's documentation!
-=====================================
+GraphBook
+=========
+
+A programmer's personal knowledge repository
+--------------------------------------------
 
 .. toctree::
    :maxdepth: 2
