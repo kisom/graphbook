@@ -2,35 +2,62 @@
 
 import graphbook.graph as graph
 import argparse
+import textwrap
 import urwid  # type: ignore # urwid doesn't have type annotations
 
 notebook: graph.notebook.Notebook
 
 
-def display_node(node):
-    response = urwid.Text(
-        [node.title, "\n-----\n", notebook.noder(node.id).render(), u"\n"]
-    )
+def build_node_display(node_id):
+    node = notebook.noder(node_id)
+    body = [urwid.Text("Node: " + node.title), urwid.Divider()]
+    for cell in node.cells:
+        body.append(urwid.Text(cell.render()))
+        body.append(urwid.Text("\n"))
+    return urwid.Pile(body)
+
+
+def display_node(button, node):
+    body = build_node_display(node.id)
+
     done = urwid.Button(u"Ok")
-    urwid.connect_signal(done, "click", exit_program)
+    urwid.connect_signal(done, "click", display)
     main.original_widget = urwid.Filler(
-        urwid.Pile([response, urwid.AttrMap(done, None, focus_map="reversed")])
+        urwid.Pile([body, urwid.AttrMap(done, None, focus_map="reversed")])
     )
 
 
-def menu(title):
-    search_box = urwid.Edit("> ")
-    body = [urwid.Text(title), search_box, urwid.Divider]
-    nodes = notebook.select(search_box.text)
+def menu():
+    body = [urwid.Text("GraphBook"), urwid.Divider()]
+    nodes = notebook.select()
     for node in nodes:
         button = urwid.Button(node.title)
         urwid.connect_signal(button, "click", display_node, node)
         body.append(urwid.AttrMap(button, None, focus_map="reversed"))
-    return urwid.ListBox(urwid.SimpleFocusListWalker)
+    return urwid.ListBox(urwid.SimpleFocusListWalker(body))
 
 
 def exit_program(button):
     raise urwid.ExitMainLoop()
+
+
+main = None
+
+
+def display(*args):
+    global main
+    main = urwid.Padding(menu(), left=2, right=2)
+    top = urwid.Overlay(
+        main,
+        urwid.SolidFill(u"\N{MEDIUM SHADE}"),
+        align="center",
+        width=("relative", 60),
+        valign="middle",
+        height=("relative", 60),
+        min_width=20,
+        min_height=9,
+    )
+    urwid.MainLoop(top, palette=[("reversed", "standout", "")]).run()
 
 
 if __name__ == "__main__":
@@ -45,15 +72,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     notebook = graph.notebook.Notebook(args.path)
 
-    main = urwid.Padding(menu("GraphBook"), left=2, right=2)
-    top = urwid.Overlay(
-        main,
-        urwid.SolidFill(u"\N{MEDIUM SHADE}"),
-        align="center",
-        width=("relative", 60),
-        valign="middle",
-        height=("relative", 60),
-        min_width=20,
-        min_height=9,
-    )
-    urwid.MainLoop(top, palette=[("reversed", "standout", "")]).run()
+    display()

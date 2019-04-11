@@ -165,7 +165,8 @@ class Notebook:
         startswith: List[NodeEntry] = []
         contains: List[NodeEntry] = []
 
-        if not text:
+        print("text:", text)
+        if text == "":
             startswith = sorted(self.nodes.values())
         else:
             if not cased:
@@ -175,12 +176,12 @@ class Notebook:
                 title: str = n.title
                 if not cased:
                     title = n.title.lower()
-                    if title.startswith(text):
-                        startswith.append(n)
-                    elif text in title:
-                        contains.append(n)
+                if title.startswith(text):
+                    startswith.append(n)
+                elif text in title:
+                    contains.append(n)
 
-                startswith.extend(contains)
+            startswith.extend(contains)
 
         if and_tags:
             tagset: Set[str] = set(and_tags)

@@ -7,12 +7,12 @@ tags:
 cells:
 - id: 21116085-8c99-42ab-b789-33b58d1918e7
   type: text
-  contents: |
+  contents: >-
     A GraphBook is a tool for organising knowledge alongside small
     snippets of code to demonstrate something.
 - id: aaec2cd7-6d27-4ca1-9a01-6843f8c2170e
   type: text
-  contents: |
+  contents: >-
     A Graphbook consists of nodes and their cells.
 - id: f71f20a6-5b0e-11e9-8d43-7315a4da9119
   type: uscheme

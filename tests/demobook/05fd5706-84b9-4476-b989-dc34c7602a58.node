@@ -6,7 +6,7 @@ tags:
 cells:
 - id: d1d64bcf-7c81-4e3f-8047-668eace3b473
   type: text
-  contents: |
+  contents: >-
     A Node consists of a list of cells, and a list of links to other
     nodes and a list of tags.
 links:
