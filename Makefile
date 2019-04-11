@@ -1,4 +1,6 @@
 PIP ?=	$(shell command -v pip3.7 || command -v pip3)
+PYTHON ?= $(shell command -v python3.7 || command -v python3)
+TUI ?= urwid
 
 init:
 	$(PIP) install -r requirements.txt --user
@@ -28,6 +30,12 @@ doc_serve:
 
 doc_watch:
 	make doc && ( make doc_serve & ) && cd docs && watch make html
+
+server: check
+	$(PYTHON) -m graphbook.ui.server
+
+tui: check
+	$(PYTHON) -m graphbook.ui.$(TUI)
 
 print-%: ; @echo $* is $($*)
 
