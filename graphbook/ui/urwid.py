@@ -41,6 +41,11 @@ def exit_program(button):
     raise urwid.ExitMainLoop()
 
 
+def keypress_exit(key):
+    if key in ["q", "Q", "esc"]:
+        raise urwid.ExitMainLoop()
+
+
 main = None
 
 
@@ -57,7 +62,9 @@ def display(*args):
         min_width=20,
         min_height=9,
     )
-    urwid.MainLoop(top, palette=[("reversed", "standout", "")]).run()
+    urwid.MainLoop(
+        top, palette=[("reversed", "standout", "")], unhandled_input=keypress_exit
+    ).run()
 
 
 if __name__ == "__main__":

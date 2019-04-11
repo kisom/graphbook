@@ -165,7 +165,6 @@ class Notebook:
         startswith: List[NodeEntry] = []
         contains: List[NodeEntry] = []
 
-        print("text:", text)
         if text == "":
             startswith = sorted(self.nodes.values())
         else:
