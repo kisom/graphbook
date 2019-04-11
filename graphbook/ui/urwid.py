@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 
+from typing import List, Optional
 import graphbook.graph as graph
 import argparse
 import textwrap
 import urwid  # type: ignore # urwid doesn't have type annotations
 
-notebook: graph.notebook.Notebook
+
+main = None
+notebook: Optional[graph.notebook.Notebook] = None
+node_stack: List[graph.notebook.NodeEntry] = []
+DEFAULT_PATH = "tests/demobook"
 
 
 def build_node_display(node_id):
@@ -14,7 +19,24 @@ def build_node_display(node_id):
     for cell in node.cells:
         body.append(urwid.Text(cell.render()))
         body.append(urwid.Text("\n"))
+    if node.links:
+        body.append(urwid.Divider())
+        body.append(urwid.Text("Linked nodes"))
+        for link in node.links:
+            lnode = notebook.nodes[link]
+            button = urwid.Button(lnode.title)
+            urwid.connect_signal(button, "click", jump_nodes, (node, lnode))
+            body.append(urwid.AttrMap(button, None, focus_map="reversed"))
+        body.append(urwid.Divider())
     return urwid.Pile(body)
+
+
+def jump_nodes(button, nodeinfo):
+    (prev_node, lnode) = nodeinfo
+    print(prev_node)
+    print(lnode)
+    node_stack.append(prev_node)
+    display_node(button, lnode)
 
 
 def display_node(button, node):
@@ -43,15 +65,25 @@ def exit_program(button):
 
 def keypress_exit(key):
     if key in ["q", "Q", "esc"]:
-        raise urwid.ExitMainLoop()
+        raise urwid.ExitMainLoop
 
 
-main = None
+def setup_notebook(args):
+    global notebook
+
+    if not notebook:
+        notebook = graph.notebook.Notebook(args.path)
 
 
 def display(*args):
     global main
-    main = urwid.Padding(menu(), left=2, right=2)
+    global node_stack
+
+    base_widget = menu()
+    if node_stack:
+        node = node_stack.pop()
+        base_widget = display(node)
+    main = urwid.Padding(base_widget, left=2, right=2)
     top = urwid.Overlay(
         main,
         urwid.SolidFill(u"\N{MEDIUM SHADE}"),
@@ -74,9 +106,9 @@ if __name__ == "__main__":
 
     # TODO: remove the default when ready
     parser.add_argument(
-        "path", help="The path to the GraphBook", default="tests/demobook", nargs="?"
+        "path", help="The path to the GraphBook", default=DEFAULT_PATH, nargs="?"
     )
     args = parser.parse_args()
-    notebook = graph.notebook.Notebook(args.path)
 
+    setup_notebook(args)
     display()
