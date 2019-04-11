@@ -53,3 +53,5 @@ Current ideas for the sandboxed environment are
 
 + A WASM virtual machine.
 + Shelling out to a program on the user's machine, e.g. a Lua interpreter.
+
+The source code is available `on Github <https://github.com/kisom/graphbook>`_.
